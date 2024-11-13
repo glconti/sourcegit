@@ -155,7 +155,11 @@ namespace SourceGit.Models
 
             var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(60) };
             if (!string.IsNullOrEmpty(ApiKey))
+            {
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {ApiKey}");
+                // support for Azure open ai endpoints
+                client.DefaultRequestHeaders.Add("api-key", ApiKey);
+            }
 
             var req = new StringContent(JsonSerializer.Serialize(chat, JsonCodeGen.Default.OpenAIChatRequest), Encoding.UTF8, "application/json");
             try
